@@ -105,12 +105,12 @@ do
                 animTrack:Stop()
             end
             local AnimAnim = Instance.new("Animation")
-            AnimAnim.AnimationId = "rbxassetid://16139108718"
+            AnimAnim.AnimationId = "rbxassetid://140164642047188"
             local Anim = animator:LoadAnimation(AnimAnim)
-            local startTime = 0.8
+            local startTime = 6.5
             Anim:Play()
             Anim.TimePosition = startTime
-            Anim:AdjustSpeed(1)
+            Anim:AdjustSpeed(1.2)
         end
     end
     humanoid.AnimationPlayed:Connect(onAnimationPlayed)
@@ -196,14 +196,14 @@ end
 
 -- Ult Activation
 do
-    local animationId = 16734584478
+    local animationId = 12447707844
     local function onAnimationPlayed(animationTrack)
         if animationTrack.Animation.AnimationId == "rbxassetid://" .. animationId then
             for _, animTrack in pairs(humanoid:GetPlayingAnimationTracks()) do
                 animTrack:Stop()
             end
             local AnimAnim = Instance.new("Animation")
-            AnimAnim.AnimationId = "rbxassetid://15121659862"
+            AnimAnim.AnimationId = "rbxassetid://15957366251"
             local Anim = humanoid:LoadAnimation(AnimAnim)
             Anim:Play()
             Anim.TimePosition = 0
