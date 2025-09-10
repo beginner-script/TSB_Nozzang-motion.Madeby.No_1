@@ -232,16 +232,75 @@ do
     humanoid.AnimationPlayed:Connect(onAnimationPlayed)
 end
 
--- 4th m1
+-- DawnSlam
 do
-    local animationId = 13294471966
+    local animationId = 10470104242
     local function onAnimationPlayed(animationTrack)
         if animationTrack.Animation.AnimationId == "rbxassetid://" .. animationId then
             for _, animTrack in pairs(humanoid:GetPlayingAnimationTracks()) do
                 animTrack:Stop()
             end
             local AnimAnim = Instance.new("Animation")
-            AnimAnim.AnimationId = "rbxassetid://18897648446"
+            AnimAnim.AnimationId = "rbxassetid://16431491215" 
+            local Anim = humanoid:LoadAnimation(AnimAnim)
+            Anim:Play()
+            Anim.TimePosition = 0.2 
+            Anim:AdjustSpeed(1) 
+        end
+    end
+    humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+end
+
+
+-- Dash
+do
+    local animationId = 10479335397 
+    local function onAnimationPlayed(animationTrack)
+        if animationTrack.Animation.AnimationId == "rbxassetid://" .. animationId then
+            for _, animTrack in pairs(humanoid:GetPlayingAnimationTracks()) do
+                animTrack:Stop()
+            end
+            local AnimAnim = Instance.new("Animation")
+            AnimAnim.AnimationId = "rbxassetid://17838006839" 
+            local Anim = humanoid:LoadAnimation(AnimAnim)
+            Anim:Play()
+            Anim.TimePosition = 0 
+            Anim:AdjustSpeed(1.2) 
+        end
+    end
+    humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+end
+
+-- block
+do
+    local animationId = 10470389827 
+    local function onAnimationPlayed(animationTrack)
+        if animationTrack.Animation.AnimationId == "rbxassetid://" .. animationId then
+            for _, animTrack in pairs(humanoid:GetPlayingAnimationTracks()) do
+                animTrack:Stop()
+            end
+            local AnimAnim = Instance.new("Animation")
+            AnimAnim.AnimationId = "rbxassetid://16515850153"
+            local Anim = humanoid:LoadAnimation(AnimAnim)
+            Anim:Play()
+            Anim.TimePosition = 0.25 
+            Anim:AdjustSpeed(0) 
+        end
+    end
+    humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+end
+
+
+-- 4th m1
+do
+    local animationId = 10469643643
+    local function onAnimationPlayed(animationTrack)
+        if animationTrack.Animation.AnimationId == "rbxassetid://" .. animationId then
+            for _, animTrack in pairs(humanoid:GetPlayingAnimationTracks()) do
+                animTrack:Stop()
+            end
+            local AnimAnim = Instance.new("Animation")
+            AnimAnim.AnimationId = "rbxassetid://18179181663"
             local Anim = humanoid:LoadAnimation(AnimAnim)
             Anim:Play()
             Anim.TimePosition = 3.78
@@ -257,7 +316,7 @@ do
         [17859015788] = true,
         [17889080495] = true,
         [17464644182] = true,
-        [16737255386] = true,
+        [18179181663] = true,
         [10469643643] = true,
     }
 
@@ -265,9 +324,9 @@ do
         ["10469493270"] = "rbxassetid://17889458563",
         ["17464644182"] = "rbxassetid://75547590335774",
         ["16737255386"] = "rbxassetid://13071982935",
-        ["10469643643"] = "rbxassetid://14374357351",
+        ["18179181663"] = "rbxassetid://18179181663",
         ["17859015788"] = "rbxassetid://12684185971",
-        ["17889080495"] = "rbxassetid://14374357351",
+        ["17889080495"] = "rbxassetid://18179181663",
         ["11365563255"] = "rbxassetid://13073745835",
         ["12983333733"] = "rbxassetid://12832505612",
         ["13927612951"] = "rbxassetid://15121659862",
@@ -322,12 +381,50 @@ do
     humanoid.AnimationPlayed:Connect(onAnimationPlayed)
 end
 
--- Chat message
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local messages = {"Made by No_1 노짱모션"}
+-- Chat message (TextChatService 버전)
+local TextChatService = game:GetService("TextChatService")
+local messages = {"Made by bacondev_1 노짱 모션(제작중) loaded"}
 for _, message in ipairs(messages) do
-    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
+    TextChatService.TextChannels.RBXGeneral:SendAsync(message)
 end
 
-local ContentProvider = game:GetService("ContentProvider")
-local RunService = game:GetService("RunService")
+-- Move 1~4 스킬 채팅
+do
+    local TextChatService = game:GetService("TextChatService")
+    local moveChats = {
+        [10468665991] = "노짱 강력펀치!",   -- Move 1
+        [10466974800] = "노짱 연속펀치!",   -- Move 2
+        [10471336737] = "노짱 밀기!",       -- Move 3
+        [12510170988] = "노짱 어퍼컷!",     -- Move 4
+    }
+
+    local function onAnimationPlayed(animationTrack)
+        local animId = tonumber(animationTrack.Animation.AnimationId:match("%d+"))
+        local msg = moveChats[animId]
+        if msg then
+            TextChatService.TextChannels.RBXGeneral:SendAsync(msg)
+        end
+    end
+
+    humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+end
+
+-- Move 3 TP 
+do
+    local move3Id = 10471336737 
+    local distance = 45          
+    local delayTime = 0.7      
+
+    humanoid.AnimationPlayed:Connect(function(animationTrack)
+        local animId = tonumber(animationTrack.Animation.AnimationId:match("%d+"))
+        if animId == move3Id then
+            task.delay(delayTime, function()
+                local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if root then
+                    root.CFrame = root.CFrame + root.CFrame.LookVector * distance
+                end
+            end)
+        end
+    end)
+end
+
