@@ -271,6 +271,44 @@ do
     humanoid.AnimationPlayed:Connect(onAnimationPlayed)
 end
 
+-- side Dash
+do
+    local animationId = 10480796021 
+    local function onAnimationPlayed(animationTrack)
+        if animationTrack.Animation.AnimationId == "rbxassetid://" .. animationId then
+            for _, animTrack in pairs(humanoid:GetPlayingAnimationTracks()) do
+                animTrack:Stop()
+            end
+            local AnimAnim = Instance.new("Animation")
+            AnimAnim.AnimationId = "rbxassetid://15957361339" 
+            local Anim = humanoid:LoadAnimation(AnimAnim)
+            Anim:Play()
+            Anim.TimePosition = 0 
+            Anim:AdjustSpeed(1.4) 
+        end
+    end
+    humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+end
+
+-- side Dash
+do
+    local animationId = 10480793962 
+    local function onAnimationPlayed(animationTrack)
+        if animationTrack.Animation.AnimationId == "rbxassetid://" .. animationId then
+            for _, animTrack in pairs(humanoid:GetPlayingAnimationTracks()) do
+                animTrack:Stop()
+            end
+            local AnimAnim = Instance.new("Animation")
+            AnimAnim.AnimationId = "rbxassetid://15957361339" 
+            local Anim = humanoid:LoadAnimation(AnimAnim)
+            Anim:Play()
+            Anim.TimePosition = 0 
+            Anim:AdjustSpeed(1.4) 
+        end
+    end
+    humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+end
+
 -- block
 do
     local animationId = 10470389827 
@@ -412,7 +450,7 @@ end
 -- Move 3 TP 
 do
     local move3Id = 10471336737 
-    local distance = 45          
+    local distance = 43.5          
     local delayTime = 0.7      
 
     humanoid.AnimationPlayed:Connect(function(animationTrack)
@@ -428,3 +466,92 @@ do
     end)
 end
 
+--비밀 번호
+local PASSWORD = "11rulibsifuh2yu1950u" -- 원하는 비밀번호
+local WHITELIST = { -- 비번 안쳐도 되는 사람들
+    ["lolbacondev_3"] = true,  -- 이름
+    ["lolbacondev_4"] = true,
+    ["nil"] = true,  -- UserId (추천)
+}
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "PasswordGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- 전체화면 TextButton
+local fullBtn = Instance.new("TextButton")
+fullBtn.Name = "FullScreenButton"
+fullBtn.Parent = screenGui
+fullBtn.Size = UDim2.new(1, 0, 1, 0)
+fullBtn.Position = UDim2.new(0, 0, 0, 0)
+fullBtn.AnchorPoint = Vector2.new(0, 0)
+fullBtn.BackgroundColor3 = Color3.fromRGB(20,20,20)
+fullBtn.BackgroundTransparency = 0
+fullBtn.Text = "비밀번호를 입력하세요"
+fullBtn.TextScaled = true
+fullBtn.TextWrapped = true
+fullBtn.Font = Enum.Font.SourceSansSemibold
+fullBtn.ZIndex = 1
+
+-- 가운데 TextBox
+local box = Instance.new("TextBox")
+box.Name = "PasswordBox"
+box.Parent = screenGui
+box.Size = UDim2.new(0, 400, 0, 50)
+box.Position = UDim2.new(0.5, -200, 0.65, -25)
+box.AnchorPoint = Vector2.new(0, 0)
+box.PlaceholderText = "비밀번호 입력 후 Enter"
+box.ClearTextOnFocus = false
+box.Text = ""
+box.TextScaled = false
+box.Font = Enum.Font.SourceSans
+box.TextSize = 24
+box.ZIndex = 2
+box.BackgroundColor3 = Color3.fromRGB(30,30,30)
+box.BackgroundTransparency = 0
+
+-- 틀림 처리
+local function onWrong()
+    fullBtn.Text = "틀림"
+    box.Text = ""
+end
+
+-- 맞음 처리
+local function onCorrect()
+    screenGui:Destroy()
+    -- 여기에 원하는 실행 코드 넣기
+end
+
+-- 화이트리스트 확인 함수
+local function isWhitelisted(plr)
+    return WHITELIST[plr.Name] or WHITELIST[plr.UserId] or false
+end
+
+-- 만약 플레이어가 화이트리스트면 바로 통과
+if isWhitelisted(player) then
+    onCorrect()
+else
+    -- Enter(포커스 손실)로 제출
+    box.FocusLost:Connect(function(enterPressed)
+        if not enterPressed then return end
+        if box.Text == PASSWORD then
+            onCorrect()
+        else
+            onWrong()
+        end
+    end)
+
+    -- 버튼 클릭으로 제출
+    fullBtn.MouseButton1Click:Connect(function()
+        if box.Text == PASSWORD then
+            onCorrect()
+        else
+            onWrong()
+        end
+    end)
+end
